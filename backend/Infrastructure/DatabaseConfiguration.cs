@@ -28,7 +28,14 @@ public static class DatabaseConfiguration
         {
             if (provider == Postgres)
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(connectionString, npgsql =>
+                    // Banco gerenciado em outro provedor tem queda de rede
+                    // ocasional. Sem retry, uma falha momentânea derruba a
+                    // requisição — ou a API inteira, se acontecer no startup.
+                    npgsql.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorCodesToAdd: null));
             }
             else
             {
@@ -97,7 +104,11 @@ public static class DatabaseConfiguration
             Password = credentials.Length > 1 ? Uri.UnescapeDataString(credentials[1]) : string.Empty,
         };
 
-        var isLocal = uri.Host is "localhost" or "127.0.0.1" || uri.Host.StartsWith("db", StringComparison.Ordinal);
+        // Comparação exata, não StartsWith: o host direto do Supabase é
+        // db.<projeto>.supabase.co e um StartsWith("db") o classificaria como
+        // local, deixando a conexão sem SSL — que o Supabase recusa.
+        // "db" e "postgres" aqui são nomes de serviço do docker-compose.
+        var isLocal = uri.Host is "localhost" or "127.0.0.1" or "::1" or "db" or "postgres";
         if (!isLocal)
         {
             // Require criptografa sem exigir cadeia confiável — é o que
@@ -107,5 +118,27 @@ public static class DatabaseConfiguration
         }
 
         return builder.ConnectionString;
+    }
+
+    /// <summary>
+    /// Descreve o destino do banco sem expor credenciais — vai para o log de
+    /// inicialização, que é onde se depura deploy quebrado.
+    /// </summary>
+    public static string Describe(string provider, string connectionString)
+    {
+        if (provider != Postgres)
+        {
+            return "arquivo local";
+        }
+
+        try
+        {
+            var b = new Npgsql.NpgsqlConnectionStringBuilder(connectionString);
+            return $"{b.Host}:{b.Port}/{b.Database} (SSL={b.SslMode})";
+        }
+        catch
+        {
+            return "connection string inválida";
+        }
     }
 }

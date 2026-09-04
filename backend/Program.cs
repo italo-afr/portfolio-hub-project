@@ -24,17 +24,37 @@ builder.Services.AddFrontendCors(builder.Configuration);
 
 var app = builder.Build();
 
-var (provider, _) = DatabaseConfiguration.Resolve(builder.Configuration);
+var (provider, connectionString) = DatabaseConfiguration.Resolve(builder.Configuration);
 app.Logger.LogInformation(
-    "Banco: {Provider} · CORS liberado para: {Origins}",
+    "Banco: {Provider} → {Destino} · CORS liberado para: {Origins}",
     provider,
+    DatabaseConfiguration.Describe(provider, connectionString),
     string.Join(", ", CorsConfiguration.ResolveOrigins(builder.Configuration)));
 
 // Cria o schema e popula na primeira execução.
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
-    await DbSeeder.SeedAsync(db);
+
+    try
+    {
+        await DbSeeder.SeedAsync(db);
+    }
+    catch (Exception ex)
+    {
+        // O stack trace do Npgsql tem 30 linhas e esconde a causa real.
+        // Estas são as duas que de fato acontecem em deploy.
+        app.Logger.LogCritical(
+            ex,
+            "Falha ao conectar no banco ({Destino}). Causas comuns:\n"
+            + "  • \"Network is unreachable\" com endereço IPv6 (2600:...): a conexão DIRETA do "
+            + "Supabase (db.<ref>.supabase.co) só resolve IPv6, e Render/Railway não têm saída IPv6. "
+            + "Use a Session pooler: postgresql://postgres.<ref>:<senha>@aws-0-<regiao>.pooler.supabase.com:5432/postgres\n"
+            + "  • Falha de autenticação: no pooler o usuário é postgres.<project-ref>, não apenas postgres.",
+            DatabaseConfiguration.Describe(provider, connectionString));
+
+        throw;
+    }
 }
 
 // Swagger fica ligado em dev; em produção só se explicitamente habilitado.

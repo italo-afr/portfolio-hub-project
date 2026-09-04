@@ -14,6 +14,13 @@ RUN dotnet publish -c Release -o /app --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
+# O Npgsql tenta carregar GSSAPI ao negociar autenticação com o PostgreSQL.
+# Sem esta lib a conexão funciona, mas o startup registra um "Error:" no log —
+# ruído que, em produção, parece deploy quebrado.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Roda como usuário sem privilégios (a imagem já traz o usuário "app").
 USER app
 
