@@ -2,10 +2,6 @@
 
 ![Portfólio de Ítalo Freire](docs/banner.jpg)
 
-<sub>Capturas no tema claro. O site tem tema claro e escuro, com alternância na navbar e preferência salva no navegador — por padrão ele segue o tema do sistema.</sub>
-
-> Um portfólio que não fala sobre o que eu construo — ele **executa** o que eu construo.
-
 Em vez de listar projetos com um print e um link para o GitHub, este portfólio hospeda
 **mini-apps funcionais que rodam dentro da própria página**, cada um consumindo uma API
 real em ASP.NET Core com persistência em banco. Quem abre o site não vê uma captura de
