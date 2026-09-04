@@ -1,0 +1,81 @@
+# Sobe o ambiente de desenvolvimento inteiro: PostgreSQL + API + frontend.
+#
+#   docker compose up --build
+#
+#   frontend  http://localhost:5173
+#   API       http://localhost:5070   (Swagger em /swagger)
+#   Postgres  localhost:5433          (portfolio / portfolio / portfolio)
+#
+# Este compose é para DEV: o frontend roda o dev server do Vite com hot reload.
+# Em produção o frontend é estático (Vercel) e só a API vai para contêiner.
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: portfolio-db
+    environment:
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: portfolio
+      POSTGRES_DB: portfolio
+    ports:
+      # 5433 no host de propósito: 5432 costuma já estar ocupada por um
+      # Postgres local ou por outro compose. Dentro da rede continua 5432.
+      - '5433:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # A API só sobe depois que o banco aceita conexões — sem isto o
+      # EnsureCreated corre antes do Postgres estar pronto e o contêiner morre.
+      test: ['CMD-SHELL', 'pg_isready -U portfolio -d portfolio']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend
+    container_name: portfolio-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Database__Provider: Postgres
+      ConnectionStrings__Postgres: Host=db;Port=5432;Database=portfolio;Username=portfolio;Password=portfolio
+      CORS_ORIGINS: http://localhost:5173,http://localhost:4173
+      Swagger__Enabled: 'true'
+    ports:
+      - '5070:8080'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          wget -qO- http://localhost:8080/api/health >/dev/null 2>&1 ||
+          curl -fsS http://localhost:8080/api/health >/dev/null 2>&1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: portfolio-web
+    depends_on:
+      - backend
+    environment:
+      # Dentro da rede do compose o backend atende pelo nome do serviço.
+      VITE_PROXY_TARGET: http://backend:8080
+    ports:
+      - '5173:5173'
+    volumes:
+      # Código montado para o hot reload funcionar...
+      - ./frontend:/app
+      # ...mas node_modules fica sendo o do contêiner: o do host é de outra
+      # plataforma e sobrescreveria os binários nativos (rolldown, lightningcss).
+      - /app/node_modules
+
+volumes:
+  postgres-data:

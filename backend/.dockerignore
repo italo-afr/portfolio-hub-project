@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+.git/
+*.user
+
+# Banco local — nunca vai para a imagem
+*.db
+*.db-shm
+*.db-wal
+
+Dockerfile
+.dockerignore
