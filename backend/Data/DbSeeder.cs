@@ -1,5 +1,7 @@
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backend.Data;
 
@@ -10,7 +12,7 @@ public static class DbSeeder
     /// </summary>
     public static async Task SeedAsync(PortfolioDbContext db)
     {
-        await db.Database.EnsureCreatedAsync();
+        await EnsureSchemaAsync(db);
 
         await SeedTodosAsync(db);
         await SeedTransactionsAsync(db);
@@ -278,6 +280,53 @@ public static class DbSeeder
             });
 
         await db.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Garante que as tabelas da aplicação existem.
+    ///
+    /// EnsureCreated() sozinho não basta: ele só cria o schema quando o banco
+    /// não tem tabela NENHUMA. O banco "postgres" do Supabase já vem com as
+    /// tabelas dele (auth, storage, realtime), então o EF conclui que o schema
+    /// já está criado e não cria nada — e a primeira consulta falha com
+    /// 42P01 relation "Todos" does not exist.
+    ///
+    /// Aqui checamos as nossas tabelas especificamente e, se faltarem,
+    /// mandamos criar. Funciona igual no SQLite e no PostgreSQL.
+    /// </summary>
+    private static async Task EnsureSchemaAsync(PortfolioDbContext db)
+    {
+        var creator = (RelationalDatabaseCreator)db.GetService<IDatabaseCreator>();
+
+        // Cria o banco em si quando ele não existe (dev local com SQLite).
+        if (!await creator.ExistsAsync())
+        {
+            await creator.CreateAsync();
+        }
+
+        if (await AppTablesExistAsync(db))
+        {
+            return;
+        }
+
+        await creator.CreateTablesAsync();
+    }
+
+    /// <summary>
+    /// Consulta barata numa tabela nossa. Se ela não existir, o provider lança
+    /// e sabemos que o schema da aplicação ainda não foi criado.
+    /// </summary>
+    private static async Task<bool> AppTablesExistAsync(PortfolioDbContext db)
+    {
+        try
+        {
+            await db.Projects.AnyAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     /// <summary>
