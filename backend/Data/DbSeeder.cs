@@ -16,7 +16,6 @@ public static class DbSeeder
 
         await SeedTodosAsync(db);
         await SeedTransactionsAsync(db);
-        await SeedChatAsync(db);
 
         if (await db.Projects.AnyAsync())
         {
@@ -415,32 +414,4 @@ public static class DbSeeder
         await db.SaveChangesAsync();
     }
 
-    /// <summary>Duas mensagens na sala padrão para o chat não abrir vazio.</summary>
-    private static async Task SeedChatAsync(PortfolioDbContext db)
-    {
-        if (await db.ChatMessages.AnyAsync())
-        {
-            return;
-        }
-
-        var now = DateTime.UtcNow;
-
-        db.ChatMessages.AddRange(
-            new ChatMessage
-            {
-                Room = ChatRooms.Default,
-                User = "Ítalo",
-                Text = "Bem-vindo! Este chat roda em SignalR sobre WebSocket — abra em duas abas para ver as mensagens chegarem em tempo real.",
-                SentAt = now.AddMinutes(-5),
-            },
-            new ChatMessage
-            {
-                Room = ChatRooms.Default,
-                User = "Ítalo",
-                Text = "Cada sala é um grupo do SignalR, então a mensagem só chega para quem está nela.",
-                SentAt = now.AddMinutes(-4),
-            });
-
-        await db.SaveChangesAsync();
-    }
 }

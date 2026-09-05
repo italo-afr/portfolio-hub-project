@@ -19,7 +19,7 @@ export default function JoinForm({ rooms, disabled, onJoin }) {
         <h3 className="text-lg font-semibold text-mist-100">Entrar no chat</h3>
         <p className="mt-2 text-sm text-mist-500">
           Escolha um nome e uma sala. Abra em duas abas para ver o tempo real
-          funcionando.
+          funcionando — suas salas são privadas e as mensagens expiram em 24h.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-2 text-left">

@@ -1,8 +1,12 @@
 import { request } from './api'
 
-/** Últimas 50 mensagens da sala — usado antes de a conexão SignalR subir. */
-export function listMessages(room) {
-  return request(`/chat/messages?room=${encodeURIComponent(room)}`)
+/**
+ * Últimas 50 mensagens da sala. As salas são isoladas por visitante, então a
+ * sessão é obrigatória — sem ela o servidor não sabe qual sala consultar.
+ */
+export function listMessages(room, session) {
+  const params = new URLSearchParams({ room, session })
+  return request(`/chat/messages?${params}`)
 }
 
 export function listRooms() {

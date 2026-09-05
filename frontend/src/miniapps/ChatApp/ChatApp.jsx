@@ -3,8 +3,12 @@ import JoinForm from './JoinForm'
 import MessageList from './MessageList'
 import StatusPill from './StatusPill'
 import useChatConnection from './useChatConnection'
+import { getSessionId } from './session'
 
 const ROOMS = ['geral', 'dotnet', 'frontend', 'devops']
+
+// Isola as salas por visitante — ver session.js e o ChatHub no backend.
+const SESSION_ID = getSessionId()
 
 export default function ChatApp() {
   const [session, setSession] = useState(null)
@@ -42,7 +46,7 @@ export default function ChatApp() {
       setJoining(true)
       setSendError(null)
       try {
-        const history = await invoke('JoinRoom', room, name)
+        const history = await invoke('JoinRoom', room, name, SESSION_ID)
         setItems(
           history.map((message) => ({
             ...message,
@@ -90,7 +94,7 @@ export default function ChatApp() {
     // Na primeira conexão ainda não há sessão, então isto só age após uma queda.
     const current = sessionRef.current
     if (status !== 'connected' || !current) return
-    invoke('JoinRoom', current.room, current.name).catch(() => {})
+    invoke('JoinRoom', current.room, current.name, SESSION_ID).catch(() => {})
   }, [status, invoke])
 
   if (!session) {

@@ -244,7 +244,7 @@ docker compose down -v
 | `PUT` | `/api/finance/transactions/{id}` | Atualiza transação |
 | `DELETE` | `/api/finance/transactions/{id}` | Exclui transação |
 | `GET` | `/api/finance/summary` | Receita, despesa e saldo por mês |
-| `GET` | `/api/chat/messages?room=` | Últimas 50 mensagens da sala |
+| `GET` | `/api/chat/messages?session=&room=` | Últimas 50 mensagens da sala daquela sessão |
 | `GET` | `/api/chat/rooms` | Salas disponíveis |
 | — | `/hubs/chat` | Hub SignalR (WebSocket) |
 
@@ -288,9 +288,15 @@ em `#frontend`; a mensagem é gravada antes de ser transmitida, então o histór
 sobrevive ao reload; o cliente reentra na sala após uma queda, porque o SignalR reconecta
 com uma conexão nova que não está mais no grupo do servidor.
 
+**Isolamento por visitante.** É uma demo pública sem autenticação, então a chave real da
+sala é `sala:sessão`: duas abas do mesmo navegador conversam entre si, mas ninguém deixa
+mensagem para o próximo visitante do portfólio. Some-se a isso um rate limit de 10
+mensagens por 30s por conexão e expiração automática em 24h — sem essas três coisas, um
+desconhecido escreveria conteúdo permanente na página que serve de cartão de visitas.
+
 `React` · `SignalR` · `WebSocket` · `ASP.NET Core` · `EF Core`
 
-> Abra em duas abas para ver o tempo real funcionando.
+> Abra em duas abas para ver o tempo real funcionando — elas compartilham a mesma sessão.
 
 ---
 
@@ -370,8 +376,7 @@ Para evoluir o schema em produção sem recriar o banco, será preciso migrar pa
 - [ ] **Publicar** — frontend na Vercel, API no Railway/Render (arquivos prontos)
 - [ ] **Migrations com EF Core** — substituir `EnsureCreated()` para permitir evoluir
       o schema em produção sem recriar o banco
-- [ ] **Moderação no ChatRoom** — rate limit por conexão e expiração de mensagens antigas
-      antes de expor o chat publicamente
+- [x] **Moderação no ChatRoom** — isolamento por sessão, rate limit e expiração em 24h
 - [ ] **CI/CD com GitHub Actions** — lint, build e testes a cada push
 - [ ] **Testes automatizados** — xUnit nos controllers, Vitest + Testing Library nos
       mini-apps
