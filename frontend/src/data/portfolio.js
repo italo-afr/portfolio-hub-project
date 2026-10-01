@@ -33,10 +33,10 @@ export const badges = [
 ]
 
 export const companies = [
-  'Visual Code · Health Tech',
-  'AUDÁCIA · Soluções Empresariais',
-  'HTM Eletrônica',
-  'BG Informática',
+  { name: 'Visual Code · Health Tech', logo: '/logos/visual-code.jpg' },
+  { name: 'AUDÁCIA · Soluções Empresariais', logo: '/logos/audacia.jpg' },
+  { name: 'HTM Eletrônica', logo: '/logos/htm.jpg' },
+  { name: 'BG Informática', logo: '/logos/bg-informatica.png' },
 ]
 
 /**
@@ -216,9 +216,9 @@ export const projects = [
     slug: 'auditor-de-curriculos',
     title: 'Auditor de Currículos',
     tag: 'IA / Projeto pessoal',
-    // Sem repositório público ainda: sem externalUrl, o card cai na página de detalhe interna.
     type: 'external',
-    externalUrl: null,
+    // Ainda sem repositorio proprio: o card aponta para o perfil do GitHub.
+    externalUrl: 'https://github.com/italo-afr',
     summary:
       'SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.',
     description:
@@ -230,8 +230,7 @@ export const projects = [
       'Chamadas à Claude API protegidas por Supabase Edge Function',
     ],
     tech: ['React', 'Vite', 'Supabase Edge', 'Claude API'],
-    // Sem repositório público no GitHub — preencher quando o repo existir/for aberto.
-    links: {},
+    links: { github: 'https://github.com/italo-afr' },
   },
   {
     slug: 'copy-trade-bot-solana',
@@ -277,6 +276,7 @@ export const experiences = [
   {
     role: 'Desenvolvedor Full-Stack & DevOps',
     company: 'Visual Code · Health Tech',
+    logo: '/logos/visual-code.jpg',
     period: '02/2026 — 08/2026',
     location: 'Remoto',
     bullets: [
@@ -291,6 +291,7 @@ export const experiences = [
   {
     role: 'Desenvolvedor Full-Stack & Automação',
     company: 'AUDÁCIA · Soluções Empresariais',
+    logo: '/logos/audacia.jpg',
     period: '10/2025 — 12/2025',
     location: 'Remoto',
     bullets: [
@@ -303,6 +304,7 @@ export const experiences = [
   {
     role: 'Técnico de Suporte em TI',
     company: 'HTM Eletrônica',
+    logo: '/logos/htm.jpg',
     period: '01/2024 — 03/2025',
     location: 'Amparo, SP · Presencial',
     bullets: [
@@ -316,6 +318,7 @@ export const experiences = [
   {
     role: 'Especialista em Suporte de TI',
     company: 'BG Informática',
+    logo: '/logos/bg-informatica.png',
     period: '08/2022 — 06/2023',
     location: 'Vinhedo, SP · Presencial',
     bullets: [

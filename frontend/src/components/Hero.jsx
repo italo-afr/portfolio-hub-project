@@ -176,8 +176,20 @@ export default function Hero() {
             Já passei por
           </span>
           {companies.map((company) => (
-            <span key={company} className="text-sm text-mist-600">
-              {company}
+            <span key={company.name} className="flex items-center gap-2">
+              {/*
+                Fundo claro fixo nos dois temas: as logos chegam com fundos
+                embutidos diferentes (branco, azul-marinho e transparente) e,
+                sem um suporte comum, não leriam como um conjunto.
+                alt vazio porque o nome da empresa já vem escrito ao lado.
+              */}
+              <img
+                src={company.logo}
+                alt=""
+                aria-hidden="true"
+                className="h-5 w-auto max-w-[68px] min-w-[34px] shrink-0 rounded bg-white object-contain px-1 py-0.5 ring-1 ring-line"
+              />
+              <span className="text-sm text-mist-600">{company.name}</span>
             </span>
           ))}
         </motion.div>

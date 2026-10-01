@@ -20,15 +20,38 @@ export default function Experience() {
               }`}
             />
 
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 className="text-lg font-semibold text-mist-100">{job.role}</h3>
-              <span className="font-mono text-xs text-mist-600">{job.period}</span>
-            </div>
+            <div className="flex items-start gap-4">
+              {job.logo && (
+                /*
+                  Altura fixa e largura automática: duas logos são wordmarks
+                  largos (Visual Code, HTM) e duas são marcas quadradas. Num
+                  quadrado fixo os wordmarks encolheriam demais; travando só a
+                  altura, todas ficam com o mesmo peso visual.
+                */
+                <img
+                  src={job.logo}
+                  alt=""
+                  aria-hidden="true"
+                  className="mt-1 h-10 w-auto max-w-[92px] min-w-[56px] shrink-0 rounded-lg bg-white object-contain p-1.5 ring-1 ring-line"
+                />
+              )}
 
-            <p className="mt-1 text-sm text-accent-400">{job.company}</p>
-            {job.location && (
-              <p className="mt-0.5 text-xs text-mist-600">{job.location}</p>
-            )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h3 className="text-lg font-semibold text-mist-100">
+                    {job.role}
+                  </h3>
+                  <span className="font-mono text-xs text-mist-600">
+                    {job.period}
+                  </span>
+                </div>
+
+                <p className="mt-1 text-sm text-accent-400">{job.company}</p>
+                {job.location && (
+                  <p className="mt-0.5 text-xs text-mist-600">{job.location}</p>
+                )}
+              </div>
+            </div>
 
             <ul className="mt-4 space-y-2.5">
               {job.bullets.map((bullet) => (
