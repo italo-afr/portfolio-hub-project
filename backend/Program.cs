@@ -4,9 +4,38 @@ using Backend.Infrastructure;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+// CreateSlimBuilder em vez de CreateBuilder: registra só o essencial para a
+// aplicação subir, cortando IIS, HTTPS/HTTP3 no Kestrel, static web assets e os
+// provedores de log de Debug/EventSource. O que usamos continua — appsettings,
+// variáveis de ambiente e log de console. Controllers e SignalR seguem
+// funcionando porque são registrados explicitamente abaixo.
+//
+// (A tabela de incompatibilidade de MVC/SignalR na documentação é sobre Native
+// AOT, que NÃO está ligado aqui — PublishAot continua ausente do .csproj.)
+var builder = WebApplication.CreateSlimBuilder(args);
 
-builder.Services.AddOpenApi();
+// Swagger só é servido em dev ou quando habilitado por configuração. Resolver
+// isso antes do Build permite não registrar o gerador de OpenAPI quando ele não
+// vai ser usado — é o serviço mais pesado do pipeline.
+var swaggerEnabled =
+    builder.Environment.IsDevelopment()
+    || builder.Configuration.GetValue("Swagger:Enabled", false);
+
+if (swaggerEnabled)
+{
+    builder.Services.AddOpenApi();
+}
+
+// Tetos de Kestrel dimensionados para o free tier (512 MB): sem eles, cada
+// conexão pode reservar buffers muito maiores do que este portfólio precisa.
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxConcurrentConnections = 100;
+    // SignalR usa conexões "upgraded" (WebSocket) — contam neste limite à parte.
+    options.Limits.MaxConcurrentUpgradedConnections = 50;
+    options.Limits.MaxRequestBodySize = 1 * 1024 * 1024;
+    options.AddServerHeader = false;
+});
 
 // Controllers atributados (TodoController). Enums viajam como texto no JSON —
 // "High" é mais legível para o cliente do que 2.
@@ -57,11 +86,8 @@ await using (var scope = app.Services.CreateAsyncScope())
     }
 }
 
-// Swagger fica ligado em dev; em produção só se explicitamente habilitado.
-var swaggerEnabled =
-    app.Environment.IsDevelopment()
-    || builder.Configuration.GetValue("Swagger:Enabled", false);
-
+// swaggerEnabled foi resolvido antes do Build, para não registrar o gerador de
+// OpenAPI quando ele não vai ser servido.
 if (swaggerEnabled)
 {
     app.MapOpenApi();
