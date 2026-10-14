@@ -123,6 +123,28 @@ export const projects = [
     links: {},
   },
   {
+    slug: 'csharp-angular-roadmap',
+    title: 'Roadmap C# & Angular',
+    tag: 'Online',
+    type: 'external',
+    externalUrl: 'https://csharp-angular-roadmap.vercel.app/',
+    summary:
+      'Roadmap interativo de 24 semanas para C# e Angular: 133 tópicos em mapa mental, com progresso salvo no navegador e vídeos recomendados em cada tópico.',
+    description:
+      'Trilha de estudo de 24 semanas, do zero ao deploy. O layout é um mapa mental: cada seção é uma pílula central e as semanas ramificam para os lados, ligadas por uma espinha vertical. Cada tópico é um checkbox cujo progresso fica no localStorage — por chave semana::tópico, e não por índice, de modo que reordenar o conteúdo não embaralha o que já foi marcado. Expandir um tópico revela os vídeos recomendados, com bandeira do idioma e canal.',
+    highlights: [
+      '133 tópicos em 7 seções e 24 semanas, tipados em TypeScript',
+      'Progresso salvo no localStorage, com contadores por semana, seção e geral em tempo real',
+      'Mapa mental no desktop e lista cronológica no mobile — a ordem muda, não só o CSS',
+      'Tema claro e escuro por tokens CSS, sem nenhuma variante dark: nos componentes',
+    ],
+    tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Framer Motion'],
+    links: {
+      github: 'https://github.com/italo-afr/csharp-angular-roadmap',
+      demo: 'https://csharp-angular-roadmap.vercel.app/',
+    },
+  },
+  {
     slug: 'gerador-de-cortes',
     type: 'external',
     externalUrl: 'https://github.com/italo-afr/gerador-de-cortes',

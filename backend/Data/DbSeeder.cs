@@ -110,12 +110,35 @@ public static class DbSeeder
             },
             new Project
             {
+                Slug = "csharp-angular-roadmap",
+                Title = "Roadmap C# & Angular",
+                Tag = "Online",
+                Type = ProjectTypes.External,
+                ExternalUrl = "https://csharp-angular-roadmap.vercel.app/",
+                SortOrder = 4,
+                Summary =
+                    "Roadmap interativo de 24 semanas para C# e Angular: 133 tópicos em mapa mental, com progresso salvo no navegador e vídeos recomendados em cada tópico.",
+                Description =
+                    "Trilha de estudo de 24 semanas, do zero ao deploy. O layout é um mapa mental: cada seção é uma pílula central e as semanas ramificam para os lados, ligadas por uma espinha vertical. Cada tópico é um checkbox cujo progresso fica no localStorage — por chave semana::tópico, e não por índice, de modo que reordenar o conteúdo não embaralha o que já foi marcado. Expandir um tópico revela os vídeos recomendados, com bandeira do idioma e canal.",
+                Tech = ["React", "TypeScript", "Vite", "Tailwind", "Framer Motion"],
+                Highlights =
+                [
+                    "133 tópicos em 7 seções e 24 semanas, tipados em TypeScript",
+                    "Progresso salvo no localStorage, com contadores por semana, seção e geral em tempo real",
+                    "Mapa mental no desktop e lista cronológica no mobile — a ordem muda, não só o CSS",
+                    "Tema claro e escuro por tokens CSS, sem nenhuma variante dark: nos componentes"
+                ],
+                GithubUrl = "https://github.com/italo-afr/csharp-angular-roadmap",
+                DemoUrl = "https://csharp-angular-roadmap.vercel.app/",
+            },
+            new Project
+            {
                 Slug = "gerador-de-cortes",
                 Title = "Cortes GG",
                 Tag = "IA / Mais recente",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/gerador-de-cortes",
-                SortOrder = 4,
+                SortOrder = 5,
                 Summary =
                     "Ferramenta full-stack para criadores de cortes de gaming: seleção visual de gameplay e webcam, geração de clipes e análise por IA que escreve título, legenda, hashtags e sugere thumbnail.",
                 Description =
@@ -137,7 +160,7 @@ public static class DbSeeder
                 Tag = "Em produção",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/lab-manager",
-                SortOrder = 5,
+                SortOrder = 6,
                 Summary =
                     "Sistema de gestão para laboratório de próteses dentárias: dashboard financeiro, controle de ordens por status de produção, alertas de atraso, integração com Google Calendar e etiquetas em PDF.",
                 Description =
@@ -160,7 +183,7 @@ public static class DbSeeder
                 Tag = "Online",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://lista-de-tarefas-se28.onrender.com/",
-                SortOrder = 6,
+                SortOrder = 7,
                 Summary =
                     "Gerenciador de tarefas full-stack com autenticação, calendário interativo (mês/semana/dia), notificações por e-mail automáticas e segurança por usuário via RLS do Supabase.",
                 Description =
@@ -183,7 +206,7 @@ public static class DbSeeder
                 Tag = "Backend",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/EncurtadorURL",
-                SortOrder = 7,
+                SortOrder = 8,
                 Summary =
                     "Encurtador de URLs com frontend em ASP.NET Core MVC, backend no Supabase (PostgreSQL), expiração automática de links e deploy em Docker atrás de reverse proxy Traefik.",
                 Description =
@@ -217,7 +240,7 @@ public static class DbSeeder
                 // Sem repositório público ainda: sem ExternalUrl, o card cai na página de detalhe interna.
                 Type = ProjectTypes.External,
                 ExternalUrl = null,
-                SortOrder = 8,
+                SortOrder = 9,
                 Summary =
                     "SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.",
                 Description =
@@ -240,7 +263,7 @@ public static class DbSeeder
                 Tag = "Open source",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/copy-trade-bot-solana",
-                SortOrder = 9,
+                SortOrder = 10,
                 Summary =
                     "Bot de copy-trading para Solana com dashboard ao vivo. Monitora carteiras, replica operações via Pump.fun, PumpSwap e Jupiter em tempo real e executa transações com bundles Jito.",
                 Description =
@@ -262,7 +285,7 @@ public static class DbSeeder
                 Tag = "Automação",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/AutoVideoIA",
-                SortOrder = 10,
+                SortOrder = 11,
                 Summary =
                     "Pipeline automatizado de criação de vídeos curtos com IA generativa: recebe um tema, gera roteiro, narração sintética, imagens e monta o vídeo final pronto para publicar.",
                 Description =
