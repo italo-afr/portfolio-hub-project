@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { badges, companies, metrics, profile } from "../data/portfolio";
+import { badges, companies, logoSizes, profile } from "../data/portfolio";
 import {
   ArrowRightIcon,
   GithubIcon,
   GlobeIcon,
   LinkedinIcon,
+  MailIcon,
   MapPinIcon,
 } from "./Icons";
 
@@ -29,6 +30,8 @@ function Avatar() {
             src="/profile.jpg"
             alt={`Foto de ${profile.name}`}
             onError={() => setFailed(true)}
+            width={800}
+            height={800}
             className="size-full object-cover"
           />
         )}
@@ -68,13 +71,20 @@ export default function Hero() {
               Disponível para oportunidades remotas
             </span>
 
-            <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-mist-100 sm:text-5xl lg:text-6xl">
-              {profile.name} <span className="inline-block">👋</span>
+            {/*
+              Nome e cargo dentro do mesmo h1: para leitor de tela e buscador,
+              o título da página é "Ítalo Freire — Desenvolvedor Full-Stack
+              Júnior". Os dois spans são block e carregam as classes que as
+              duas linhas já tinham, então o desenho não muda.
+            */}
+            <h1 className="mt-5">
+              <span className="block text-4xl font-extrabold tracking-tight text-mist-100 sm:text-5xl lg:text-6xl">
+                {profile.name} <span className="inline-block">👋</span>
+              </span>
+              <span className="mt-3 block text-lg font-medium text-accent-400 sm:text-xl">
+                {profile.role}
+              </span>
             </h1>
-
-            <p className="mt-3 text-lg font-medium text-accent-400 sm:text-xl">
-              {profile.role}
-            </p>
             {profile.roleDetail && (
               <p className="mt-1 font-mono text-sm text-mist-600">
                 {profile.roleDetail}
@@ -116,29 +126,30 @@ export default function Hero() {
                 <ArrowRightIcon width={16} height={16} />
               </a>
               <a
-                href="#contato"
-                className="rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-mist-100 transition hover:border-line-strong hover:bg-surface-2"
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-semibold text-mist-100 transition hover:border-line-strong hover:bg-surface-2"
               >
-                Entrar em contato
+                <MailIcon width={16} height={16} />
+                {profile.email}
               </a>
               <div className="flex items-center gap-1">
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="GitHub"
-                  className="rounded-lg p-2.5 text-mist-500 transition hover:bg-surface-2 hover:text-mist-100"
-                >
-                  <GithubIcon />
-                </a>
                 <a
                   href={profile.linkedin}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label="LinkedIn"
+                  aria-label={`LinkedIn de ${profile.name}`}
                   className="rounded-lg p-2.5 text-mist-500 transition hover:bg-surface-2 hover:text-mist-100"
                 >
                   <LinkedinIcon />
+                </a>
+                <a
+                  href={profile.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`GitHub de ${profile.name}`}
+                  className="rounded-lg p-2.5 text-mist-500 transition hover:bg-surface-2 hover:text-mist-100"
+                >
+                  <GithubIcon />
                 </a>
               </div>
             </div>
@@ -149,28 +160,9 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.dl
-          {...rise(0.2)}
-          className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-surface-2 sm:grid-cols-4"
-        >
-          {metrics.map((metric) => (
-            <div key={metric.label} className="bg-ink-900 px-5 py-6">
-              <dt className="sr-only">{metric.label}</dt>
-              <dd>
-                <span className="block text-2xl font-bold tracking-tight text-mist-100 sm:text-3xl">
-                  {metric.value}
-                </span>
-                <span className="mt-1 block text-sm text-mist-600">
-                  {metric.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </motion.dl>
-
         <motion.div
-          {...rise(0.28)}
-          className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2"
+          {...rise(0.2)}
+          className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-2"
         >
           <span className="font-mono text-xs tracking-[0.2em] text-mist-600 uppercase">
             Já passei por
@@ -187,6 +179,8 @@ export default function Hero() {
                 src={company.logo}
                 alt=""
                 aria-hidden="true"
+                width={logoSizes[company.logo]?.width}
+                height={logoSizes[company.logo]?.height}
                 className="h-5 w-auto max-w-[68px] min-w-[34px] shrink-0 rounded bg-white object-contain px-1 py-0.5 ring-1 ring-line"
               />
               <span className="text-sm text-mist-600">{company.name}</span>

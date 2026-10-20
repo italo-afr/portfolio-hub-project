@@ -1,4 +1,4 @@
-import { experiences } from '../data/portfolio'
+import { experiences, logoSizes } from '../data/portfolio'
 import Section from './Section'
 
 export default function Experience() {
@@ -7,7 +7,7 @@ export default function Experience() {
       id="experiencia"
       kicker="Experiência"
       title="Trajetória profissional"
-      description="Do suporte à infraestrutura de 300+ usuários ao desenvolvimento full-stack com esteira de deploy."
+      description="Do suporte e da infraestrutura ao desenvolvimento full-stack, com passagem por DevOps."
     >
       <ol className="relative space-y-10 border-l border-line pl-8 sm:pl-10">
         {experiences.map((job, index) => (
@@ -32,6 +32,8 @@ export default function Experience() {
                   src={job.logo}
                   alt=""
                   aria-hidden="true"
+                  width={logoSizes[job.logo]?.width}
+                  height={logoSizes[job.logo]?.height}
                   className="mt-1 h-10 w-auto max-w-[92px] min-w-[56px] shrink-0 rounded-lg bg-white object-contain p-1.5 ring-1 ring-line"
                 />
               )}

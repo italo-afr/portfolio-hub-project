@@ -3,12 +3,12 @@
 export const profile = {
   name: 'Ítalo Freire',
   fullName: 'Ítalo de Amorim Freire',
-  role: 'Desenvolvedor Full-Stack .NET',
-  roleDetail: 'C# · ASP.NET Core · Razor · PostgreSQL',
+  role: 'Desenvolvedor Full-Stack Júnior',
+  roleDetail: 'C# · .NET · JavaScript/TypeScript · React · Flutter · PostgreSQL · Docker',
   location: 'Sumaré, SP · Remoto',
   languages: 'Português nativo · Inglês intermediário',
   headline:
-    'Construo aplicações web de ponta a ponta em .NET — da modelagem do banco e da arquitetura em camadas ao deploy containerizado — com experiência complementar em DevOps, observabilidade e integrações REST.',
+    'Construo aplicações web e mobile com C#/.NET, JavaScript/TypeScript, React e Flutter, do backend ao deploy. Vim do suporte e da infraestrutura, então penso em como o software roda em produção.',
   email: 'italoafr1@gmail.com',
   github: 'https://github.com/italo-afr',
   linkedin: 'https://www.linkedin.com/in/italoafr/',
@@ -16,21 +16,28 @@ export const profile = {
   linkedinLabel: 'linkedin.com/in/italoafr',
 }
 
-export const metrics = [
-  { value: '40%', label: 'redução de MTTR' },
-  { value: '3k+', label: 'chamados resolvidos' },
-  { value: '70%', label: 'resolução em 1º contato' },
-  { value: '3+', label: 'anos de experiência' },
-]
-
 export const badges = [
   'C#',
-  '.NET 8',
-  'ASP.NET Core',
+  '.NET',
+  'TypeScript',
+  'React',
+  'Flutter',
   'PostgreSQL',
   'Docker',
-  'React',
 ]
+
+/**
+ * Dimensões reais de cada logo. Ficam aqui, num mapa só, porque as mesmas
+ * imagens aparecem no hero e na timeline — e passá-las como width/height no
+ * <img> faz o navegador reservar o espaço antes do download, sem o salto de
+ * layout que o Lighthouse acusa como CLS.
+ */
+export const logoSizes = {
+  '/logos/visual-code.jpg': { width: 200, height: 57 },
+  '/logos/audacia.jpg': { width: 200, height: 200 },
+  '/logos/htm.jpg': { width: 240, height: 89 },
+  '/logos/bg-informatica.png': { width: 240, height: 240 },
+}
 
 export const companies = [
   { name: 'Visual Code · Health Tech', logo: '/logos/visual-code.jpg' },
@@ -45,6 +52,57 @@ export const companies = [
  *   'external' → abre externalUrl em nova aba direto do card
  */
 export const projects = [
+  {
+    slug: 'encurtador-url',
+    title: 'EncurtadorURL',
+    tag: 'Backend',
+    type: 'external',
+    externalUrl: 'https://github.com/italo-afr/EncurtadorURL',
+    summary:
+      'Encurtador de URLs com frontend em ASP.NET Core MVC, backend no Supabase (PostgreSQL), expiração automática de links e deploy em Docker atrás de reverse proxy Traefik.',
+    description:
+      'Encurtador de URLs construído em .NET 8 com ASP.NET Core MVC, interface Razor e API REST pública (POST /api/shorten). A solução é estruturada em camadas — Controllers, Models com ViewModels e Request DTOs, Views Razor — com validação de campos obrigatórios e proteção contra CSRF via @Html.AntiForgeryToken. A persistência fica no Supabase (PostgreSQL) usando o cliente Postgrest C#.',
+    highlights: [
+      'API REST pública (POST /api/shorten) e interface Razor com padrão Controller-Model-View',
+      'Geração de short_codes únicos com expiração automática (expires_at) e limpeza de links vencidos',
+      'Proteção contra CSRF com @Html.AntiForgeryToken e validação de campos obrigatórios',
+      'Arquitetura em camadas com ViewModels e Request DTOs, separando responsabilidades',
+      'Docker + Docker Compose com reverse proxy Traefik e redirecionamento HTTPS em produção',
+    ],
+    tech: [
+      '.NET 8',
+      'ASP.NET Core MVC',
+      'C#',
+      'Razor Views',
+      'Supabase (PostgreSQL)',
+      'Postgrest C# Client',
+      'Docker Compose',
+      'Traefik',
+    ],
+    links: { github: 'https://github.com/italo-afr/EncurtadorURL' },
+  },
+  {
+    slug: 'taskmanager',
+    title: 'Lista de Tarefas',
+    tag: 'Online',
+    type: 'external',
+    externalUrl: 'https://lista-de-tarefas-se28.onrender.com/',
+    summary:
+      'Gerenciador de tarefas full-stack com autenticação, calendário interativo (mês/semana/dia), notificações por e-mail automáticas e segurança por usuário via RLS do Supabase.',
+    description:
+      'Gerenciador de tarefas com foco em rotina real de trabalho: calendário interativo em três granularidades, lembretes por e-mail disparados por automação e isolamento de dados por usuário garantido no próprio banco com Row Level Security.',
+    highlights: [
+      'Autenticação e isolamento de dados por usuário com RLS',
+      'Calendário interativo nas visões mês, semana e dia',
+      'Notificações por e-mail automáticas via Make.com + Resend',
+      'Publicado no Render com deploy contínuo',
+    ],
+    tech: ['React', 'TypeScript', 'Supabase', 'Make.com', 'Resend'],
+    links: {
+      github: 'https://github.com/italo-afr/ListaDeTarefas',
+      demo: 'https://lista-de-tarefas-se28.onrender.com/',
+    },
+  },
   {
     slug: 'todo-list',
     title: 'Todo List',
@@ -164,97 +222,6 @@ export const projects = [
     links: { github: 'https://github.com/italo-afr/gerador-de-cortes' },
   },
   {
-    slug: 'labmanager',
-    title: 'LabManager',
-    tag: 'Em produção',
-    type: 'external',
-    externalUrl: 'https://github.com/italo-afr/lab-manager',
-    summary:
-      'Sistema de gestão para laboratório de próteses dentárias: dashboard financeiro, controle de ordens por status de produção, alertas de atraso, integração com Google Calendar e etiquetas em PDF.',
-    description:
-      'Digitaliza o acompanhamento de pedidos, o controle financeiro e a carteira de dentistas parceiros de um laboratório de próteses dentárias. Está em produção como MVP, nascido de um projeto de extensão universitária. O dashboard confronta o valor a receber com o já recebido e destaca as ordens prioritárias; as entregas em atraso disparam alerta automático.',
-    highlights: [
-      'Dashboard com a receber x recebido e ordens prioritárias',
-      'Gestão completa de ordens com acompanhamento do status de produção',
-      'Alertas automáticos de entregas em atraso e baixa de pagamento',
-      'CRUD de dentistas com máscara de telefone e integração com Google Calendar',
-      'Geração automática de etiquetas em PDF para identificação dos trabalhos',
-    ],
-    tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Firebase Firestore', 'Firebase Auth'],
-    links: { github: 'https://github.com/italo-afr/lab-manager' },
-  },
-  {
-    slug: 'taskmanager',
-    title: 'Lista de Tarefas',
-    tag: 'Online',
-    type: 'external',
-    externalUrl: 'https://lista-de-tarefas-se28.onrender.com/',
-    summary:
-      'Gerenciador de tarefas full-stack com autenticação, calendário interativo (mês/semana/dia), notificações por e-mail automáticas e segurança por usuário via RLS do Supabase.',
-    description:
-      'Gerenciador de tarefas com foco em rotina real de trabalho: calendário interativo em três granularidades, lembretes por e-mail disparados por automação e isolamento de dados por usuário garantido no próprio banco com Row Level Security.',
-    highlights: [
-      'Autenticação e isolamento de dados por usuário com RLS',
-      'Calendário interativo nas visões mês, semana e dia',
-      'Notificações por e-mail automáticas via Make.com + Resend',
-      'Publicado no Render com deploy contínuo',
-    ],
-    tech: ['React', 'TypeScript', 'Supabase', 'Make.com', 'Resend'],
-    links: {
-      github: 'https://github.com/italo-afr/ListaDeTarefas',
-      demo: 'https://lista-de-tarefas-se28.onrender.com/',
-    },
-  },
-  {
-    slug: 'encurtador-url',
-    title: 'EncurtadorURL',
-    tag: 'Backend',
-    type: 'external',
-    externalUrl: 'https://github.com/italo-afr/EncurtadorURL',
-    summary:
-      'Encurtador de URLs com frontend em ASP.NET Core MVC, backend no Supabase (PostgreSQL), expiração automática de links e deploy em Docker atrás de reverse proxy Traefik.',
-    description:
-      'Encurtador de URLs construído em .NET 8 com ASP.NET Core MVC, interface Razor e API REST pública (POST /api/shorten). A solução é estruturada em camadas — Controllers, Models com ViewModels e Request DTOs, Views Razor — com validação de campos obrigatórios e proteção contra CSRF via @Html.AntiForgeryToken. A persistência fica no Supabase (PostgreSQL) usando o cliente Postgrest C#.',
-    highlights: [
-      'API REST pública (POST /api/shorten) e interface Razor com padrão Controller-Model-View',
-      'Geração de short_codes únicos com expiração automática (expires_at) e limpeza de links vencidos',
-      'Proteção contra CSRF com @Html.AntiForgeryToken e validação de campos obrigatórios',
-      'Arquitetura em camadas com ViewModels e Request DTOs, separando responsabilidades',
-      'Docker + Docker Compose com reverse proxy Traefik e redirecionamento HTTPS em produção',
-    ],
-    tech: [
-      '.NET 8',
-      'ASP.NET Core MVC',
-      'C#',
-      'Razor Views',
-      'Supabase (PostgreSQL)',
-      'Postgrest C# Client',
-      'Docker Compose',
-      'Traefik',
-    ],
-    links: { github: 'https://github.com/italo-afr/EncurtadorURL' },
-  },
-  {
-    slug: 'auditor-de-curriculos',
-    title: 'Auditor de Currículos',
-    tag: 'IA / Projeto pessoal',
-    type: 'external',
-    // Ainda sem repositorio proprio: o card aponta para o perfil do GitHub.
-    externalUrl: 'https://github.com/italo-afr',
-    summary:
-      'SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.',
-    description:
-      'SaaS de análise de currículos que avalia o documento sob três óticas complementares — filtro ATS, olhar de RH e olhar técnico. Aceita PDF, DOCX e TXT, reescreve as experiências usando a metodologia XYZ e sugere vagas compatíveis. As chamadas de IA passam por uma Supabase Edge Function, mantendo a chave fora do cliente.',
-    highlights: [
-      'Análise em três óticas: ATS, RH e Técnica',
-      'Parsing de PDF, DOCX e TXT no navegador',
-      'Reescrita de experiências pela metodologia XYZ',
-      'Chamadas à Claude API protegidas por Supabase Edge Function',
-    ],
-    tech: ['React', 'Vite', 'Supabase Edge', 'Claude API'],
-    links: { github: 'https://github.com/italo-afr' },
-  },
-  {
     slug: 'copy-trade-bot-solana',
     title: 'Copy Trade Bot · Solana',
     tag: 'Open source',
@@ -292,125 +259,133 @@ export const projects = [
     tech: ['Python', 'IA Generativa', 'TTS', 'FFmpeg'],
     links: { github: 'https://github.com/italo-afr/AutoVideoIA' },
   },
+  {
+    slug: 'auditor-de-curriculos',
+    title: 'Auditor de Currículos',
+    tag: 'IA / Projeto pessoal',
+    type: 'external',
+    // Ainda sem repositorio proprio: o card aponta para o perfil do GitHub.
+    externalUrl: 'https://github.com/italo-afr',
+    summary:
+      'SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.',
+    description:
+      'SaaS de análise de currículos que avalia o documento sob três óticas complementares — filtro ATS, olhar de RH e olhar técnico. Aceita PDF, DOCX e TXT, reescreve as experiências usando a metodologia XYZ e sugere vagas compatíveis. As chamadas de IA passam por uma Supabase Edge Function, mantendo a chave fora do cliente.',
+    highlights: [
+      'Análise em três óticas: ATS, RH e Técnica',
+      'Parsing de PDF, DOCX e TXT no navegador',
+      'Reescrita de experiências pela metodologia XYZ',
+      'Chamadas à Claude API protegidas por Supabase Edge Function',
+    ],
+    tech: ['React', 'Vite', 'Supabase Edge', 'Claude API'],
+    links: { github: 'https://github.com/italo-afr' },
+  },
+  {
+    slug: 'labmanager',
+    title: 'LabManager',
+    tag: 'Em produção',
+    type: 'external',
+    // O repositorio lab-manager nao existe mais no GitHub (404): o card aponta
+    // para o perfil ate o link certo ser confirmado.
+    externalUrl: 'https://github.com/italo-afr',
+    summary:
+      'Sistema de gestão para laboratório de próteses dentárias: dashboard financeiro, controle de ordens por status de produção, alertas de atraso, integração com Google Calendar e etiquetas em PDF.',
+    description:
+      'Digitaliza o acompanhamento de pedidos, o controle financeiro e a carteira de dentistas parceiros de um laboratório de próteses dentárias. Está em produção como MVP, nascido de um projeto de extensão universitária. O dashboard confronta o valor a receber com o já recebido e destaca as ordens prioritárias; as entregas em atraso disparam alerta automático.',
+    highlights: [
+      'Dashboard com a receber x recebido e ordens prioritárias',
+      'Gestão completa de ordens com acompanhamento do status de produção',
+      'Alertas automáticos de entregas em atraso e baixa de pagamento',
+      'CRUD de dentistas com máscara de telefone e integração com Google Calendar',
+      'Geração automática de etiquetas em PDF para identificação dos trabalhos',
+    ],
+    tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Firebase Firestore', 'Firebase Auth'],
+    links: { github: 'https://github.com/italo-afr' },
+  },
 ]
 
 export const experiences = [
   {
-    role: 'Desenvolvedor Full-Stack & DevOps',
+    role: 'Desenvolvedor Flutter & DevOps',
     company: 'Visual Code · Health Tech',
     logo: '/logos/visual-code.jpg',
-    period: '02/2026 — 08/2026',
+    period: '01/2026 — 09/2026',
     location: 'Remoto',
     bullets: [
-      'Desenvolvi aplicações full-stack integradas a PostgreSQL (Supabase), com 6+ stored procedures customizadas, triggers e views agregadas para regras de negócio.',
-      'Estruturei a camada de segurança com Row Level Security (RLS), isolando dados entre 4 tipos de usuário via políticas por role e funções com SECURITY DEFINER.',
-      'Construí integrações com sistemas externos via REST APIs e webhooks para processamento assíncrono de conteúdo, com validação client-side.',
-      'Configurei infraestrutura cloud em GCP e Firebase (App Distribution e Hosting), com versionamento no GitHub, Docker e CI/CD em estruturação com GitHub Actions.',
-      'Estabeleci monitoramento e observabilidade com Grafana e estratégia de 3 ambientes (dev → staging → produção) com branch strategy.',
+      'Desenvolvi telas e fluxos do aplicativo em Flutter, com backend em Supabase/PostgreSQL.',
+      'Modelei dados no PostgreSQL e trabalhei a camada de segurança com Row Level Security, isolando o acesso por tipo de usuário.',
+      'Estruturei os ambientes de dev, staging e produção, com Docker, GitHub Actions, GCP e Firebase, e monitoramento com Grafana.',
     ],
-    stack: 'REST APIs · PostgreSQL · Supabase · Docker · GCP · Firebase · Grafana · TypeScript · Flutter · Linear',
+    stack: 'Flutter · Dart · Supabase · PostgreSQL · Docker · GitHub Actions · GCP · Firebase · Grafana',
   },
   {
-    role: 'Desenvolvedor Full-Stack & Automação',
+    role: 'Desenvolvedor Full Stack & Automação',
     company: 'AUDÁCIA · Soluções Empresariais',
     logo: '/logos/audacia.jpg',
     period: '10/2025 — 12/2025',
     location: 'Remoto',
     bullets: [
-      'Projetei e implementei integrações entre 5+ sistemas (LinkedIn Lead Gen Forms, HubSpot, Sender.net, ManyChat, WhatsApp API) via Zapier e webhooks, com sincronização em tempo real.',
-      'Configurei infraestrutura de e-mail marketing com autenticação de domínio (DNS, SPF, DKIM, DMARC), elevando a entregabilidade e protegendo a reputação do domínio.',
-      'Desenvolvi tags de rastreamento avançado em JavaScript e eventos de conversão personalizados, alimentando a inteligência de tráfego pago.',
+      'Integrei sistemas de marketing e CRM (LinkedIn Lead Gen Forms, HubSpot, Sender.net, ManyChat, WhatsApp API) via webhooks e Zapier.',
+      'Configurei autenticação de domínio para e-mail (DNS, SPF, DKIM, DMARC).',
+      'Escrevi tags de rastreamento e eventos de conversão em JavaScript.',
     ],
-    stack: 'REST APIs · Webhooks · JavaScript · Zapier · HubSpot · WordPress · DNS · SPF · DKIM · DMARC',
+    stack: 'JavaScript · REST APIs · Webhooks · Zapier · HubSpot · WordPress · DNS · SPF · DKIM · DMARC',
   },
   {
-    role: 'Técnico de Suporte em TI',
+    role: 'Técnico de Suporte de TI',
     company: 'HTM Eletrônica',
     logo: '/logos/htm.jpg',
     period: '01/2024 — 03/2025',
     location: 'Amparo, SP · Presencial',
     bullets: [
-      'Administrei servidores Windows Server e Linux, configurando VPN, firewall e políticas de acesso para 300+ usuários.',
-      'Desenvolvi scripts de automação em PowerShell e Bash para provisionamento de usuários, manutenções e coleta de logs, eliminando 5h/semana de trabalho manual.',
-      'Implementei dashboards de monitoramento com Grafana, transformando uma operação reativa em proativa e reduzindo o MTTR em 40%.',
-      'Resolvi 150+ chamados/mês no help desk interno, com 70% de resolução em primeiro contato, atuando em hardware, redes corporativas e sistemas empresariais.',
+      'Administrei servidores Windows Server e Linux, com VPN, firewall e políticas de acesso.',
+      'Automatizei provisionamento de usuários, manutenções e coleta de logs com PowerShell e Bash.',
+      'Montei dashboards de monitoramento em Grafana e atuei no help desk interno, em hardware, redes e sistemas empresariais.',
     ],
     stack: 'Windows Server · Linux · PowerShell · Bash · Grafana · VPN · Firewall · Protheus/TOTVS',
   },
   {
-    role: 'Especialista em Suporte de TI',
+    role: 'Suporte de TI',
     company: 'BG Informática',
     logo: '/logos/bg-informatica.png',
-    period: '08/2022 — 06/2023',
+    period: '08/2022 — 07/2023',
     location: 'Vinhedo, SP · Presencial',
     bullets: [
-      'Diagnostiquei e solucionei problemas em hardware, software e redes corporativas, reduzindo o tempo de inatividade dos usuários em 25%.',
-      'Otimizei processos de atendimento com ferramentas de acesso remoto (AnyDesk, TeamViewer), aumentando a eficiência do suporte em 30%.',
+      'Diagnostiquei e resolvi problemas de hardware, software e redes corporativas.',
+      'Atendi usuários remotamente com AnyDesk e TeamViewer.',
     ],
     stack: 'AnyDesk · TeamViewer · Pacote Office · Power BI · Hardware · Redes',
   },
 ]
 
-// Ordenada com o núcleo .NET primeiro — é o foco do posicionamento.
+// Agrupada pelo posicionamento atual: backend e frontend/mobile primeiro.
 export const stack = [
   {
-    category: 'Backend .NET',
+    category: 'Backend',
     items: [
       'C#',
       '.NET 8',
-      'ASP.NET Core MVC',
-      'ASP.NET Core Web API',
-      'Razor Views',
-      'Entity Framework Core',
+      'ASP.NET Core',
+      'JavaScript',
+      'TypeScript',
+      'Node.js',
+      'APIs REST',
     ],
   },
   {
-    category: 'Padrões & Arquitetura',
-    items: [
-      'OOP',
-      'SOLID',
-      'MVC',
-      'Repository Pattern',
-      'Injeção de Dependência',
-      'Arquitetura em Camadas',
-    ],
+    category: 'Frontend e mobile',
+    items: ['React', 'HTML', 'CSS', 'Tailwind', 'Flutter', 'Dart'],
   },
   {
-    category: 'Bancos de Dados',
-    items: [
-      'PostgreSQL',
-      'Supabase',
-      'SQL',
-      'Stored Procedures',
-      'Triggers · Views',
-      'RLS · JSONB',
-    ],
+    category: 'Banco de dados',
+    items: ['PostgreSQL', 'SQL', 'Supabase', 'RLS'],
   },
   {
-    category: 'DevOps & Deploy',
-    items: [
-      'Docker · Compose',
-      'Traefik',
-      'GitHub Actions',
-      'GCP',
-      'Vercel · Render',
-      'Grafana',
-    ],
+    category: 'DevOps e cloud',
+    items: ['Docker', 'Git', 'GitHub Actions', 'GCP', 'Firebase', 'Grafana'],
   },
   {
-    category: 'Frontend Web',
-    items: ['React', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind', 'Vite', 'Flutter/Dart'],
-  },
-  {
-    category: 'Segurança & Sysadmin',
-    items: [
-      'JWT · AntiForgery (CSRF)',
-      'Row Level Security',
-      'HTTPS',
-      'Windows Server · Linux',
-      'PowerShell · Bash',
-      'VPN · Firewall',
-    ],
+    category: 'Infraestrutura',
+    items: ['Windows Server', 'Linux', 'PowerShell', 'Bash'],
   },
 ]
 
@@ -439,9 +414,9 @@ export const certifications = [
 ]
 
 export const about = [
-  'Desenvolvedor full-stack com 3+ anos de experiência em web e mobile, com base sólida em programação orientada a objetos, padrões MVC e arquitetura em camadas.',
-  'A trajetória começou no suporte corporativo, cuidando da infraestrutura de mais de 300 usuários — foi ali que aprendi a olhar para a causa raiz em vez do sintoma e a automatizar tudo que se repete. Hoje isso aparece no código: modelo o banco, construo a aplicação e cuido do caminho até a produção, com containerização, CI/CD e observabilidade.',
-  'Apliquei essa base em projeto próprio em produção com .NET 8 / ASP.NET Core MVC + Supabase + Docker + Traefik, e sigo aprofundando em C#/ASP.NET na graduação em Análise e Desenvolvimento de Sistemas, com conclusão prevista para setembro de 2026.',
+  'Desenvolvedor Full-Stack com 3+ anos em TI, sendo cerca de 1 ano atuando diretamente em desenvolvimento e DevOps. Comecei no suporte e na infraestrutura (Windows Server, Linux, redes, Grafana).',
+  'Na Visual Code (health tech), desenvolvi telas e fluxos em Flutter com backend Supabase/PostgreSQL e estruturei ambientes de dev, staging e produção. Em C# e ASP.NET Core, desenvolvi o EncurtadorURL.',
+  'Busco minha posição como desenvolvedor full-stack júnior, remoto ou na região de Campinas/SP.',
 ]
 
 export const navLinks = [

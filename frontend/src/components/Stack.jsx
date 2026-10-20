@@ -5,9 +5,9 @@ export default function Stack() {
   return (
     <Section
       id="stack"
-      kicker="Stack"
+      kicker="Competências"
       title="Tecnologias que eu uso"
-      description="Ferramentas com as quais já entreguei em produção — não uma lista de desejos."
+      description="Linguagens e ferramentas com que trabalho, do backend ao deploy."
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {stack.map((group) => (

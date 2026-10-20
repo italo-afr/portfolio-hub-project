@@ -29,7 +29,7 @@ public static class DbSeeder
                 Title = "Todo List",
                 Tag = "Rodando aqui",
                 Type = ProjectTypes.Embedded,
-                SortOrder = 1,
+                SortOrder = 3,
                 Summary =
                     "Mini-app de tarefas com CRUD completo rodando dentro deste portfólio: o frontend React conversa com uma Web API em ASP.NET Core e persiste em SQLite via Entity Framework Core.",
                 Description =
@@ -57,7 +57,7 @@ public static class DbSeeder
                 Title = "Finance Tracker",
                 Tag = "Interativo",
                 Type = ProjectTypes.Embedded,
-                SortOrder = 2,
+                SortOrder = 4,
                 Summary =
                     "Controle financeiro pessoal rodando dentro do portfólio: lançamentos de receita e despesa, filtro por mês e gráfico de receita x despesa alimentado por totais agregados no banco.",
                 Description =
@@ -85,7 +85,7 @@ public static class DbSeeder
                 Title = "ChatRoom",
                 Tag = "Tempo Real",
                 Type = ProjectTypes.Embedded,
-                SortOrder = 3,
+                SortOrder = 5,
                 Summary =
                     "Chat em tempo real com SignalR sobre WebSocket: salas independentes, histórico persistido e reconexão automática — tudo rodando dentro do portfólio.",
                 Description =
@@ -115,7 +115,7 @@ public static class DbSeeder
                 Tag = "Online",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://csharp-angular-roadmap.vercel.app/",
-                SortOrder = 4,
+                SortOrder = 6,
                 Summary =
                     "Roadmap interativo de 24 semanas para C# e Angular: 133 tópicos em mapa mental, com progresso salvo no navegador e vídeos recomendados em cada tópico.",
                 Description =
@@ -138,7 +138,7 @@ public static class DbSeeder
                 Tag = "IA / Mais recente",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/gerador-de-cortes",
-                SortOrder = 5,
+                SortOrder = 7,
                 Summary =
                     "Ferramenta full-stack para criadores de cortes de gaming: seleção visual de gameplay e webcam, geração de clipes e análise por IA que escreve título, legenda, hashtags e sugere thumbnail.",
                 Description =
@@ -159,8 +159,9 @@ public static class DbSeeder
                 Title = "LabManager",
                 Tag = "Em produção",
                 Type = ProjectTypes.External,
-                ExternalUrl = "https://github.com/italo-afr/lab-manager",
-                SortOrder = 6,
+                // O repositorio lab-manager nao existe mais no GitHub (404).
+                ExternalUrl = "https://github.com/italo-afr",
+                SortOrder = 11,
                 Summary =
                     "Sistema de gestão para laboratório de próteses dentárias: dashboard financeiro, controle de ordens por status de produção, alertas de atraso, integração com Google Calendar e etiquetas em PDF.",
                 Description =
@@ -174,7 +175,7 @@ public static class DbSeeder
                     "CRUD de dentistas com máscara de telefone e integração com Google Calendar",
                     "Geração automática de etiquetas em PDF para identificação dos trabalhos"
                 ],
-                GithubUrl = "https://github.com/italo-afr/lab-manager",
+                GithubUrl = "https://github.com/italo-afr",
             },
             new Project
             {
@@ -183,7 +184,7 @@ public static class DbSeeder
                 Tag = "Online",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://lista-de-tarefas-se28.onrender.com/",
-                SortOrder = 7,
+                SortOrder = 2,
                 Summary =
                     "Gerenciador de tarefas full-stack com autenticação, calendário interativo (mês/semana/dia), notificações por e-mail automáticas e segurança por usuário via RLS do Supabase.",
                 Description =
@@ -206,7 +207,7 @@ public static class DbSeeder
                 Tag = "Backend",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/EncurtadorURL",
-                SortOrder = 8,
+                SortOrder = 1,
                 Summary =
                     "Encurtador de URLs com frontend em ASP.NET Core MVC, backend no Supabase (PostgreSQL), expiração automática de links e deploy em Docker atrás de reverse proxy Traefik.",
                 Description =
@@ -240,7 +241,7 @@ public static class DbSeeder
                 // Sem repositório público ainda: sem ExternalUrl, o card cai na página de detalhe interna.
                 Type = ProjectTypes.External,
                 ExternalUrl = null,
-                SortOrder = 9,
+                SortOrder = 10,
                 Summary =
                     "SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.",
                 Description =
@@ -263,7 +264,7 @@ public static class DbSeeder
                 Tag = "Open source",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/copy-trade-bot-solana",
-                SortOrder = 10,
+                SortOrder = 8,
                 Summary =
                     "Bot de copy-trading para Solana com dashboard ao vivo. Monitora carteiras, replica operações via Pump.fun, PumpSwap e Jupiter em tempo real e executa transações com bundles Jito.",
                 Description =
@@ -285,7 +286,7 @@ public static class DbSeeder
                 Tag = "Automação",
                 Type = ProjectTypes.External,
                 ExternalUrl = "https://github.com/italo-afr/AutoVideoIA",
-                SortOrder = 11,
+                SortOrder = 9,
                 Summary =
                     "Pipeline automatizado de criação de vídeos curtos com IA generativa: recebe um tema, gera roteiro, narração sintética, imagens e monta o vídeo final pronto para publicar.",
                 Description =
