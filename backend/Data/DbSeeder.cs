@@ -155,30 +155,6 @@ public static class DbSeeder
             },
             new Project
             {
-                Slug = "labmanager",
-                Title = "LabManager",
-                Tag = "Em produção",
-                Type = ProjectTypes.External,
-                // O repositorio lab-manager nao existe mais no GitHub (404).
-                ExternalUrl = "https://github.com/italo-afr",
-                SortOrder = 11,
-                Summary =
-                    "Sistema de gestão para laboratório de próteses dentárias: dashboard financeiro, controle de ordens por status de produção, alertas de atraso, integração com Google Calendar e etiquetas em PDF.",
-                Description =
-                    "Digitaliza o acompanhamento de pedidos, o controle financeiro e a carteira de dentistas parceiros de um laboratório de próteses dentárias. Está em produção como MVP, nascido de um projeto de extensão universitária. O dashboard confronta o valor a receber com o já recebido e destaca as ordens prioritárias; as entregas em atraso disparam alerta automático.",
-                Tech = ["React", "TypeScript", "Vite", "Tailwind", "Firebase Firestore", "Firebase Auth"],
-                Highlights =
-                [
-                    "Dashboard com a receber x recebido e ordens prioritárias",
-                    "Gestão completa de ordens com acompanhamento do status de produção",
-                    "Alertas automáticos de entregas em atraso e baixa de pagamento",
-                    "CRUD de dentistas com máscara de telefone e integração com Google Calendar",
-                    "Geração automática de etiquetas em PDF para identificação dos trabalhos"
-                ],
-                GithubUrl = "https://github.com/italo-afr",
-            },
-            new Project
-            {
                 Slug = "taskmanager",
                 Title = "Lista de Tarefas",
                 Tag = "Online",
@@ -203,59 +179,24 @@ public static class DbSeeder
             new Project
             {
                 Slug = "encurtador-url",
-                Title = "EncurtadorURL",
-                Tag = "Backend",
-                Type = ProjectTypes.External,
-                ExternalUrl = "https://github.com/italo-afr/EncurtadorURL",
+                Title = "Encurtador de URL",
+                Tag = "Rodando aqui",
+                Type = ProjectTypes.Embedded,
                 SortOrder = 1,
                 Summary =
-                    "Encurtador de URLs com frontend em ASP.NET Core MVC, backend no Supabase (PostgreSQL), expiração automática de links e deploy em Docker atrás de reverse proxy Traefik.",
+                    "Encurtador de URLs rodando dentro do portfólio: cole um link longo, receba um código curto que redireciona de verdade, com expiração automática e contagem de cliques.",
                 Description =
-                    "Encurtador de URLs construído em .NET 8 com ASP.NET Core MVC, interface Razor e API REST pública (POST /api/shorten). A solução é estruturada em camadas — Controllers, Models com ViewModels e Request DTOs, Views Razor — com validação de campos obrigatórios e proteção contra CSRF via @Html.AntiForgeryToken. A persistência fica no Supabase (PostgreSQL) usando o cliente Postgrest C#.",
-                Tech =
-                [
-                    ".NET 8",
-                    "ASP.NET Core MVC",
-                    "C#",
-                    "Razor Views",
-                    "Supabase (PostgreSQL)",
-                    "Postgrest C# Client",
-                    "Docker Compose",
-                    "Traefik"
-                ],
+                    "Mini-app embutido que traz para dentro do portfólio o EncurtadorURL, projeto em .NET 8 com ASP.NET Core MVC e Razor. Aqui o frontend é React e o backend é a mesma Web API em ASP.NET Core do resto do site: POST /api/shorten grava o link e GET /r/{codigo} devolve um 302 para o destino, contando o clique. O código curto é sorteado com RandomNumberGenerator — e não sequencial, que deixaria adivinhar o link dos outros — e o índice único no banco cobre a colisão. Sua lista é isolada por sessão, como as salas do chat: cada visitante vê apenas o que criou.",
+                Tech = ["React", "ASP.NET Core Web API", "C#", "Entity Framework Core", "SQLite", "PostgreSQL"],
                 Highlights =
                 [
-                    "API REST pública (POST /api/shorten) e interface Razor com padrão Controller-Model-View",
-                    "Geração de short_codes únicos com expiração automática (expires_at) e limpeza de links vencidos",
-                    "Proteção contra CSRF com @Html.AntiForgeryToken e validação de campos obrigatórios",
-                    "Arquitetura em camadas com ViewModels e Request DTOs, separando responsabilidades",
-                    "Docker + Docker Compose com reverse proxy Traefik e redirecionamento HTTPS em produção"
+                    "POST /api/shorten cria o link e GET /r/{codigo} redireciona com 302, contabilizando o clique",
+                    "Código aleatório em alfabeto sem caracteres ambíguos, com índice único e nova tentativa em caso de colisão",
+                    "Expiração automática em 7 dias, com os vencidos varridos na própria requisição",
+                    "Validação do destino: só http e https, recusando endereços de rede interna e domínio sem TLD",
+                    "Teto de 20 links por visitante e limite de 10 criações por minuto, com resposta 429"
                 ],
                 GithubUrl = "https://github.com/italo-afr/EncurtadorURL",
-            },
-            new Project
-            {
-                Slug = "auditor-de-curriculos",
-                Title = "Auditor de Currículos",
-                Tag = "IA / Projeto pessoal",
-                // Sem repositório público ainda: sem ExternalUrl, o card cai na página de detalhe interna.
-                Type = ProjectTypes.External,
-                ExternalUrl = null,
-                SortOrder = 10,
-                Summary =
-                    "SaaS que analisa currículos sob três óticas (ATS, RH e Técnica), processa PDF/DOCX/TXT, reescreve usando a metodologia XYZ e busca vagas compatíveis.",
-                Description =
-                    "SaaS de análise de currículos que avalia o documento sob três óticas complementares — filtro ATS, olhar de RH e olhar técnico. Aceita PDF, DOCX e TXT, reescreve as experiências usando a metodologia XYZ e sugere vagas compatíveis. As chamadas de IA passam por uma Supabase Edge Function, mantendo a chave fora do cliente.",
-                Tech = ["React", "Vite", "Supabase Edge", "Claude API"],
-                Highlights =
-                [
-                    "Análise em três óticas: ATS, RH e Técnica",
-                    "Parsing de PDF, DOCX e TXT no navegador",
-                    "Reescrita de experiências pela metodologia XYZ",
-                    "Chamadas à Claude API protegidas por Supabase Edge Function"
-                ],
-                // Sem repositório público no GitHub — preencher quando o repo existir/for aberto.
-                GithubUrl = null,
             },
             new Project
             {
@@ -329,10 +270,53 @@ public static class DbSeeder
 
         if (await AppTablesExistAsync(db))
         {
+            // O banco já é de uma versão anterior: só faltam as tabelas novas.
+            await EnsureNewTablesAsync(db, creator);
             return;
         }
 
         await creator.CreateTablesAsync();
+    }
+
+    /// <summary>
+    /// Cria as tabelas que nasceram depois que o banco já existia.
+    ///
+    /// CreateTablesAsync() não serve aqui: ele recria o schema inteiro e falha
+    /// no que já está lá. Então pegamos o script que o próprio EF geraria e
+    /// executamos apenas os comandos da tabela que falta — assim o modelo do
+    /// EF continua sendo a única fonte de verdade do schema, em vez de um
+    /// CREATE TABLE escrito à mão que silenciosamente diverge dele.
+    /// </summary>
+    private static async Task EnsureNewTablesAsync(
+        PortfolioDbContext db,
+        RelationalDatabaseCreator creator)
+    {
+        if (await TableExistsAsync(db, () => db.ShortLinks.AnyAsync()))
+        {
+            return;
+        }
+
+        var comandos = creator.GenerateCreateScript()
+            .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(c => c.Contains("\"ShortLinks\"", StringComparison.Ordinal));
+
+        foreach (var comando in comandos)
+        {
+            await db.Database.ExecuteSqlRawAsync(comando);
+        }
+    }
+
+    private static async Task<bool> TableExistsAsync(PortfolioDbContext db, Func<Task<bool>> consulta)
+    {
+        try
+        {
+            await consulta();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     /// <summary>

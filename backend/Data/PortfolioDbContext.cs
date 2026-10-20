@@ -16,6 +16,8 @@ public class PortfolioDbContext(DbContextOptions<PortfolioDbContext> options)
 
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
 
+    public DbSet<ShortLink> ShortLinks => Set<ShortLink>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // SQLite não tem tipo array: as listas de strings viram JSON em uma coluna TEXT.
@@ -72,5 +74,17 @@ public class PortfolioDbContext(DbContextOptions<PortfolioDbContext> options)
         chat.Property(m => m.Text).HasMaxLength(ChatLimits.MaxTextLength).IsRequired();
         // O histórico é sempre "as N últimas de uma sala".
         chat.HasIndex(m => new { m.Room, m.Id });
+
+        var shortLink = modelBuilder.Entity<ShortLink>();
+
+        shortLink.Property(l => l.Code).HasMaxLength(12).IsRequired();
+        shortLink.Property(l => l.TargetUrl).HasMaxLength(ShortLinkRules.MaxUrlLength).IsRequired();
+        shortLink.Property(l => l.Session).HasMaxLength(40).IsRequired();
+        // O código é a chave de busca do redirecionamento e não pode repetir.
+        shortLink.HasIndex(l => l.Code).IsUnique();
+        // A lista do mini-app é sempre "os links desta sessão, do mais novo ao mais velho".
+        shortLink.HasIndex(l => new { l.Session, l.Id });
+        // A limpeza varre por data de expiração.
+        shortLink.HasIndex(l => l.ExpiresAt);
     }
 }

@@ -14,6 +14,7 @@ export const miniApps = {
   'todo-list': lazy(() => import('./TodoApp/TodoApp.jsx')),
   'finance-tracker': lazy(() => import('./FinanceApp/FinanceApp.jsx')),
   'chat-room': lazy(() => import('./ChatApp/ChatApp.jsx')),
+  'encurtador-url': lazy(() => import('./ShortenerApp/ShortenerApp.jsx')),
 }
 
 export function getMiniApp(slug) {
